@@ -13,7 +13,7 @@ def card_masker(card_number: str) -> str:
         return card_masked
 
     else:
-        return 'Неверный номер карты!'
+        return 'Неверно введен номер!'
 
 
 def account_masker(account_number: str) -> str:
@@ -26,4 +26,4 @@ def account_masker(account_number: str) -> str:
     if account_number.isdigit() and len(account_number) == 20:
         return "**" + account_number[-4:]
     else:
-        return 'Неверный номер счета!'
+        return 'Неверно введен номер!'
