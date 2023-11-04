@@ -24,6 +24,13 @@ def test_get_selected_list(lst_origin, state_value, expected):
     assert get_selected_list(lst_origin, state_value) == expected
 
 
+def test_get_selected_list_default(lst_origin):
+    assert get_selected_list(lst_origin) == [
+        {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+        {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}
+    ]
+
+
 @pytest.mark.parametrize("reverse, expected", [(True, [
              {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
              {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
@@ -35,3 +42,11 @@ def test_get_selected_list(lst_origin, state_value, expected):
              {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'}])])
 def test_get_sorted_list(lst_origin, reverse, expected):
     assert get_sorted_list(lst_origin, reverse) == expected
+
+
+def test_get_sorted_list_default(lst_origin):
+    assert get_sorted_list(lst_origin) == [
+             {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+             {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
+             {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
+             {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]
