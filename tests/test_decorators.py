@@ -17,4 +17,3 @@ def test_decorated_function(x, y, expected):
         return x / y
     result = my_function()
     assert result == expected
-
