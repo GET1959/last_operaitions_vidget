@@ -3,7 +3,7 @@ import requests
 
 from src.utils import get_operations, get_rub_sum
 
-URL = 'https://jsonkeeper.com/b/DRYA'  # operations.json
+URL = "https://jsonkeeper.com/b/DRYA"  # operations.json
 
 
 @pytest.fixture()
@@ -15,7 +15,7 @@ def list_of_transactions():
 @pytest.mark.parametrize(
     "file, expected",
     [
-        ('operations.json', requests.get(URL, verify=False).json()),
+        ("operations.json", requests.get(URL, verify=False).json()),
         ("dict_file.json", []),
         ("empty_file.json", []),
         ("some_file.json", []),
