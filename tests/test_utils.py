@@ -37,21 +37,11 @@ def test_get_rub_sum_usd(list_of_transactions):
         get_rub_sum(list_of_transactions[1], "RUB")
 
 
+url = "https://www.cbr-xml-daily.ru/daily_json.js"
+data = requests.get(url).json()
+data_dict = {currency: data["Valute"][currency]["Value"] for currency in data["Valute"]}
+def test_get_amount_in_rub_usd():
+    assert get_amount_in_rub('trans_2.json') == round(8221.37 * data_dict['USD'], 2)
 
-#path_to_file = os.path.join('C:/Users/Gennady/Skypro_learning/last_operaitions_vidget/data/operations.json')
-
-@patch('requests.get')
-#@patch('builtins.open', create=True)
-def test_get_amount_in_rub(mock_get):
-    #mock_file = mock_open.return_value
-    #mock_file.read.return_value = 'USD'
-    mock_get.return_value.json.return_value = 722412.6
-    assert get_amount_in_rub('trans_2.json') == 722412.6
-    #mock_open.assert_called_once_with(path_to_file + 'trans_2.json', 'r', encoding='utf-8')
-    mock_get.assert_called_once_with("https://www.cbr-xml-daily.ru/daily_json.js")
-
-# @patch('requests.get')
-# def test_get_github_user_info(mock_get):
-#     mock_get.return_value.json.return_value = {'login': 'testuser', 'name': 'Test User'}
-#     assert get_github_user_info('testuser') == {'login': 'testuser', 'name': 'Test User'}
-#     mock_get.assert_called_once_with('https://api.github.com/users/testuser')
+def test_get_amount_in_rub_rub():
+    assert get_amount_in_rub('trans_1.json') == 31957.58

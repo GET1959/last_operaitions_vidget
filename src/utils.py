@@ -1,6 +1,6 @@
 import json
-import os
 import logging
+import os
 from typing import Any
 
 import requests
@@ -9,13 +9,14 @@ import requests
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-fh = logging.FileHandler('utils.log', mode='w', encoding='utf-8')
+fh = logging.FileHandler("utils.log", mode="w", encoding="utf-8")
 fh.setLevel(logging.INFO)
 
-formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(module)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)
 
 logger.addHandler(fh)
+
 
 def get_operations(file_name: str) -> Any:
     """
@@ -89,10 +90,3 @@ def get_amount_in_rub(file_name: str) -> Any:
     else:
         logger.error(f"Failed to receive data. Status code: {response.status_code}")
         return None
-
-
-print(get_amount_in_rub("trans_2.json"))
-#print(get_operations('list_file.json'))
-#print(get_operations('some_file.json'))
-#print(get_operations('empty_file.json'))
-#assert get_amount_in_rub('trans_2.json') == 722412.6
