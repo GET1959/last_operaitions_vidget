@@ -4,7 +4,9 @@ import pytest
 from unittest.mock import Mock, patch
 import requests
 
+
 from src.utils import get_operations, get_rub_sum, get_amount_in_rub
+
 
 #URL = 'https://jsonkeeper.com/b/DRYA'  # operations.json
 
@@ -20,6 +22,7 @@ def list_of_transactions():
     [('list_file.json', [{"id": 441945886, "state": "EXECUTED", "date": "2019-08-26T10:50:58.294041"},
      {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
      {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"}]),
+
         ("dict_file.json", []),
         ("empty_file.json", []),
         ("some_file.json", []),])
