@@ -1,0 +1,4 @@
+id;state;date;amount;currency_name;currency_code;from;to;description
+0;EXECUTED;2023-09-05;50000;rub;RUB;user1;user2;перевод
+1;EXECUTED;2023-11-03;70000;usd;USD;user2;user3;кредит
+2;CANCELED;2023-11-10;20000;eur;EUR;user4;user5;операция не подтверждена
