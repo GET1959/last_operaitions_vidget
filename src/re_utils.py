@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from collections import Counter
@@ -6,12 +7,16 @@ from typing import Any
 import pandas as pd
 
 
-CAT_DICT = {
-    "Перевод организации": 0,
-    "Перевод с карты на карту": 0,
-    "Открытие вклада": 0,
-    "Перевод со счета на счет": 0,
-}
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+fh = logging.FileHandler("utils.log", mode="w", encoding="utf-8")
+fh.setLevel(logging.INFO)
+
+formatter = logging.Formatter("%(asctime)s - %(module)s - %(levelname)s - %(message)s")
+fh.setFormatter(formatter)
+
+logger.addHandler(fh)
 
 
 def table_to_dict_list(file: str) -> Any:
@@ -32,6 +37,7 @@ def table_to_dict_list(file: str) -> Any:
         df = pd.read_excel(path_to_file)
 
     else:
+        logger.error("Файл с таким расширением не поддерживается")
         return None
 
     df = df.loc[df["id"] > 0]
@@ -50,6 +56,8 @@ def table_to_dict_list(file: str) -> Any:
 
     trans_list = [dict_1[i] | operationAmount[i] | dict_2[i] for i in range(len(df))]
 
+    logger.info(f"Успешно получены данные из файла {ext}.")
+
     return trans_list
 
 
@@ -66,6 +74,7 @@ def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
         for transaction in transactions_list
         if re.search(string.lower(), transaction["description"].lower())
     ]
+    logger.info(f"Из списка трансакций получены трансакции по запросу {string}.")
     return result_list
 
 
@@ -80,31 +89,13 @@ def category_count(transactions_list: list[dict]) -> dict:
     category_count_dict = dict(
         Counter([transaction["description"] for transaction in transactions_list])
     )
+    logger.info("Из списка трансакций получена статистика по категориям.")
     return category_count_dict
 
 
-def category_count_2(transactions_list: list[dict], cat_dict: dict) -> dict:
-    """
-    Функция принимает список словарей с данными о банковских операциях и словарь категорий операций
-    и возвращает словарь, в котором ключи — это названия категорий,
-    а значения — это количество операций в каждой категории.
-    :param transactions_list:
-    :param dict:
-    :return category_count_dict:
-    """
-    category_count_dict =
-    {k: v for k, v in zip(cat_dict.keys(), Counter([transaction["description"].values()) for transaction in transactions_list])}
-
-    return category_count_dict
-
-trans_list_1 = table_to_dict_list("transactions_excel.xlsx")
-# for i in range(10):
-#     print(find_operation(trans_list_1, 'перевод со')[i])
-
-# print({cat['description']: 0 for cat in (table_to_dict_list('transactions_excel.xlsx'))})
-print(category_count(trans_list_1))
-
-print(trans_list_1[59])
-print(trans_list_1[60])
-print(trans_list_1[61])
-print(trans_list_1[62])
+transact_list = table_to_dict_list("transactions_excel.xlsx")
+print(category_count(transact_list))
+# for i in range(len(find_operation(transact_list, 'Открытие вклада'))):
+#     print(find_operation(transact_list, 'Открытие вклада')[i])
+find_operation(transact_list, "Открытие")
+print([trans for trans in transact_list if "Открытие" in trans["description"]])
