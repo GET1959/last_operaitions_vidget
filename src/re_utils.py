@@ -1,6 +1,8 @@
 import logging
 import re
-from collections import Counter
+from collections import Counter, defaultdict
+
+from src.utils import table_to_dict_list
 
 
 logger = logging.getLogger(__name__)
@@ -32,16 +34,36 @@ def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
     return result_list
 
 
-def category_count(transactions_list: list[dict]) -> dict:
+TRANS_LIST = table_to_dict_list("transactions_excel.xlsx")
+
+CAT_DICT = defaultdict(int)
+for transact in TRANS_LIST:
+    CAT_DICT[transact["description"]] = 0
+CAT_DICT = dict(CAT_DICT)
+
+
+def category_count(transactions_list: list[dict], cat_dict: dict) -> dict:
     """
     Функция принимает список словарей с данными о банковских операциях и словарь категорий операций
     и возвращает словарь, в котором ключи — это названия категорий,
     а значения — это количество операций в каждой категории.
     :param transactions_list:
+    :param cat_dict:
     :return category_count_dict:
     """
-    category_count_dict = dict(
-        Counter([transaction["description"] for transaction in transactions_list])
+    cat_counted = dict(
+        Counter(
+            [
+                transaction["description"]
+                for transaction in transactions_list
+                if transaction["description"] in list(CAT_DICT)
+            ]
+        )
     )
+    category_count_dict = {}
+    for k, v in cat_dict.items():
+        category_count_dict[k] = cat_counted[k]
+
     logger.info("Из списка трансакций получена статистика по категориям.")
+
     return category_count_dict
