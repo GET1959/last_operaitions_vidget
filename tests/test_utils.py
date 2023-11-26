@@ -43,7 +43,7 @@ def test_get_rub_sum_usd(list_of_transactions):
             "test.csv",
             [
                 {
-                    "id": 0,
+                    "id": 1,
                     "state": "EXECUTED",
                     "date": "2023-09-05",
                     "operationAmount": {
@@ -55,7 +55,7 @@ def test_get_rub_sum_usd(list_of_transactions):
                     "description": "перевод",
                 },
                 {
-                    "id": 1,
+                    "id": 2,
                     "state": "EXECUTED",
                     "date": "2023-11-03",
                     "operationAmount": {
@@ -67,7 +67,7 @@ def test_get_rub_sum_usd(list_of_transactions):
                     "description": "кредит",
                 },
                 {
-                    "id": 2,
+                    "id": 3,
                     "state": "CANCELED",
                     "date": "2023-11-10",
                     "operationAmount": {
@@ -84,7 +84,7 @@ def test_get_rub_sum_usd(list_of_transactions):
             "test.xlsx",
             [
                 {
-                    "id": 0,
+                    "id": 1,
                     "state": "EXECUTED",
                     "date": "2023-10-01",
                     "operationAmount": {
@@ -96,7 +96,7 @@ def test_get_rub_sum_usd(list_of_transactions):
                     "description": "перевод",
                 },
                 {
-                    "id": 1,
+                    "id": 2,
                     "state": "CANCELED",
                     "date": "2023-09-05",
                     "operationAmount": {
@@ -108,7 +108,7 @@ def test_get_rub_sum_usd(list_of_transactions):
                     "description": "операция не подтверждена",
                 },
                 {
-                    "id": 2,
+                    "id": 3,
                     "state": "EXECUTED",
                     "date": "2023-11-07",
                     "operationAmount": {
