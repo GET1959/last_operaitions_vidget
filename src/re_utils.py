@@ -67,14 +67,3 @@ def category_count(transactions_list: list[dict], cat_dict: dict) -> dict:
     logger.info("Из списка трансакций получена статистика по категориям.")
 
     return category_count_dict
-
-
-print(
-    category_count(
-        TRANS_LIST,
-        {
-            "Открытие вклада": 0,
-            "Перевод со счета на счет": 0,
-        },
-    )
-)
