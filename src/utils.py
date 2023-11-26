@@ -104,26 +104,29 @@ def table_to_dict_list(file: str) -> Any:
     cur_dir = os.path.dirname(os.path.abspath("."))
     path_to_file = os.path.join(cur_dir + "/data/" + file)
     ext = os.path.splitext(path_to_file)[1]
-    if ext == '.csv':
-        df = pd.read_csv(path_to_file, delimiter=';', encoding='utf-8')
+    if ext == ".csv":
+        df = pd.read_csv(path_to_file, delimiter=";", encoding="utf-8")
 
-    elif ext == '.xls' or ext == '.xlsx':
+    elif ext == ".xls" or ext == ".xlsx":
         df = pd.read_excel(path_to_file)
 
     else:
         logger.error("Файл с таким расширением не поддерживается")
         return None
 
-    df = df.fillna('unknown_source')
-    df = df.rename(columns={'currency_name': 'name', 'currency_code': 'code'})
+    df = df.loc[df["id"] > 0]
+    df = df.fillna("unknown_source")
+    df = df.rename(columns={"currency_name": "name", "currency_code": "code"})
 
-    currency = df.loc[:, ['name', 'code']].to_dict(orient='records')
-    operationAmount = df.loc[:, ['amount']].to_dict(orient='records')
-    operationAmount = [{'operationAmount': {'amount': am['amount'], 'currency': cur}}
-                       for am, cur in zip(operationAmount, currency)]
+    currency = df.loc[:, ["name", "code"]].to_dict(orient="records")
+    operationAmount = df.loc[:, ["amount"]].to_dict(orient="records")
+    operationAmount = [
+        {"operationAmount": {"amount": am["amount"], "currency": cur}}
+        for am, cur in zip(operationAmount, currency)
+    ]
 
-    dict_1 = df.loc[:, ['id', 'state', 'date']].to_dict(orient='records')
-    dict_2 = df.loc[:, ['from', 'to', 'description']].to_dict(orient='records')
+    dict_1 = df.loc[:, ["id", "state", "date"]].to_dict(orient="records")
+    dict_2 = df.loc[:, ["from", "to", "description"]].to_dict(orient="records")
 
     trans_list = [dict_1[i] | operationAmount[i] | dict_2[i] for i in range(len(df))]
 
