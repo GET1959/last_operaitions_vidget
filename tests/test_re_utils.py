@@ -1,8 +1,6 @@
-import os
-import json
-import pytest
+from src.utils import table_to_dict_list
 
-from src.re_utils import table_to_dict_list, find_operation, category_count
+from src.re_utils import find_operation, category_count
 
 
 transact_list = table_to_dict_list("transactions_excel.xlsx")
