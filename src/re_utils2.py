@@ -1,56 +1,20 @@
-import os
+import logging
 import re
-from collections import Counter
-from typing import Any
+from collections import Counter, defaultdict
 
-import pandas as pd
-
-
-CAT_DICT = {
-    "Перевод организации": 0,
-    "Перевод с карты на карту": 0,
-    "Открытие вклада": 0,
-    "Перевод со счета на счет": 0,
-}
+from src.utils import table_to_dict_list
 
 
-def table_to_dict_list(file: str) -> Any:
-    """
-    Принимает на вход таблицу трансакций в формате csv или excel и
-    возвращает список словарей, отражающих трансакцию в формате
-    настоящего проекта.
-    :param file:
-    :return Any:
-    """
-    cur_dir = os.path.dirname(os.path.abspath("."))
-    path_to_file = os.path.join(cur_dir + "/data/" + file)
-    ext = os.path.splitext(path_to_file)[1]
-    if ext == ".csv":
-        df = pd.read_csv(path_to_file, delimiter=";", encoding="utf-8")
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
-    elif ext == ".xls" or ext == ".xlsx":
-        df = pd.read_excel(path_to_file)
+fh = logging.FileHandler("utils.log", mode="w", encoding="utf-8")
+fh.setLevel(logging.INFO)
 
-    else:
-        return None
+formatter = logging.Formatter("%(asctime)s - %(module)s - %(levelname)s - %(message)s")
+fh.setFormatter(formatter)
 
-    df = df.loc[df["id"] > 0]
-    df = df.fillna("unknown_source")
-    df = df.rename(columns={"currency_name": "name", "currency_code": "code"})
-
-    currency = df.loc[:, ["name", "code"]].to_dict(orient="records")
-    operationAmount = df.loc[:, ["amount"]].to_dict(orient="records")
-    operationAmount = [
-        {"operationAmount": {"amount": am["amount"], "currency": cur}}
-        for am, cur in zip(operationAmount, currency)
-    ]
-
-    dict_1 = df.loc[:, ["id", "state", "date"]].to_dict(orient="records")
-    dict_2 = df.loc[:, ["from", "to", "description"]].to_dict(orient="records")
-
-    trans_list = [dict_1[i] | operationAmount[i] | dict_2[i] for i in range(len(df))]
-
-    return trans_list
+logger.addHandler(fh)
 
 
 def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
@@ -66,22 +30,54 @@ def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
         for transaction in transactions_list
         if re.search(string.lower(), transaction["description"].lower())
     ]
+    logger.info(f"Из списка трансакций получены трансакции по запросу {string}.")
     return result_list
 
 
-def category_count_2(transactions_list: list[dict], cat_dict: dict) -> dict:
+TRANS_LIST = table_to_dict_list("transactions_excel.xlsx")
+
+CAT_DICT = defaultdict(int)
+for transact in TRANS_LIST:
+    CAT_DICT[transact["description"]] = 0
+CAT_DICT = dict(CAT_DICT)
+
+
+def category_count(transactions_list: list[dict], cat_dict: dict) -> dict:
     """
     Функция принимает список словарей с данными о банковских операциях и словарь категорий операций
     и возвращает словарь, в котором ключи — это названия категорий,
     а значения — это количество операций в каждой категории.
     :param transactions_list:
-    :param dict:
+    :param cat_dict:
     :return category_count_dict:
     """
-    category_count_dict = {k: v for k, v in zip(cat_dict.keys(),
-                Counter([transaction["description"] for transaction in transactions_list]).values())}
+    cat_counted = dict(
+        Counter(
+            [
+                transaction["description"]
+                for transaction in transactions_list
+                if transaction["description"] in list(CAT_DICT)
+            ]
+        )
+    )
+    category_count_dict = {}
+    for k, v in cat_dict.items():
+        category_count_dict[k] = cat_counted[k]
+
+    logger.info("Из списка трансакций получена статистика по категориям.")
 
     return category_count_dict
 
-trans_list_1 = table_to_dict_list("transactions_excel.xlsx")
-print(category_count_2(trans_list_1, CAT_DICT))
+
+print(
+    category_count(
+        TRANS_LIST,
+        {
+            "Открытие вклада": 0,
+            "Перевод со счета на счет": 0,
+        },
+    )
+)
+
+print(category_count(TRANS_LIST, CAT_DICT))
+print(CAT_DICT)

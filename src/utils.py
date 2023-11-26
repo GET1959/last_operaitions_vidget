@@ -92,6 +92,7 @@ def get_amount_in_rub(file_name: str) -> Any:
         logger.error(f"Failed to receive data. Status code: {response.status_code}")
         return None
 
+
 def table_to_dict_list(file: str) -> Any:
     """
     Принимает на вход таблицу трансакций в формате csv или excel и
