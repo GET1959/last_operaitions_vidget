@@ -9,7 +9,7 @@ from src.utils import get_operations, get_rub_sum, get_amount_in_rub
 
 # URL = 'https://jsonkeeper.com/b/DRYA'  # operations.json
 
-cur_dir = os.path.dirname(os.path.abspath("."))
+cur_dir = os.path.dirname(os.path.dirname(__file__))
 path_to_file = os.path.join(cur_dir + "/data/")
 
 
