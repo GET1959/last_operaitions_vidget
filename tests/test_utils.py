@@ -3,8 +3,7 @@ import json
 import pytest
 import requests
 
-
-from src.utils import get_operations, get_rub_sum, get_amount_in_rub
+from src.utils import get_operations, get_rub_sum, get_amount_in_rub, table_to_dict_list
 
 
 # URL = 'https://jsonkeeper.com/b/DRYA'  # operations.json

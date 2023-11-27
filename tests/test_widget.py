@@ -1,6 +1,6 @@
 import pytest
 
-from src.widget import get_type_and_mask, date_str_to_date
+from src.widget import date_str_to_date, get_type_and_mask
 
 
 @pytest.mark.parametrize(
