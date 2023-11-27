@@ -78,10 +78,16 @@ def category_count_2(transactions_list: list[dict], cat_dict: dict) -> dict:
     :param dict:
     :return category_count_dict:
     """
-    category_count_dict = {k: v for k, v in zip(cat_dict.keys(),
-                Counter([transaction["description"] for transaction in transactions_list]).values())}
+    category_count_dict = {
+        k: v
+        for k, v in zip(
+            cat_dict.keys(),
+            Counter([transaction["description"] for transaction in transactions_list]).values(),
+        )
+    }
 
     return category_count_dict
+
 
 trans_list_1 = table_to_dict_list("transactions_excel.xlsx")
 print(category_count_2(trans_list_1, CAT_DICT))
