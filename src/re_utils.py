@@ -1,6 +1,8 @@
 import logging
 import re
-from collections import Counter
+from collections import Counter, defaultdict
+
+from src.utils import table_to_dict_list
 
 from src.utils import table_to_dict_list
 
@@ -35,6 +37,7 @@ def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
 
 
 TRANS_LIST = table_to_dict_list("transactions_excel.xlsx")
+
 
 CAT_DICT = {
     "Перевод организации": 0,
