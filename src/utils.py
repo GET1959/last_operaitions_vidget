@@ -19,19 +19,19 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
-def get_operations(file_name: str) -> Any:
+def get_operations(file: str) -> Any:
     """
      Функция принимает на вход путь до JSON-файла и возвращает список словарей
      с данными о финансовых транзакциях. Если файл пустой, содержит не список
      или не найден, функция возвращает пустой список.
-    :param file_name:
+    :param file:
     :return list of dict:
     """
-    cur_dir = os.path.dirname(os.path.abspath("."))
-    path_to_file = os.path.join(cur_dir + "/data/" + file_name)
+    cur_dir = os.path.dirname(os.path.dirname(__file__))
+    path_to_file = os.path.join(cur_dir + "/data/" + file)
     try:
-        with open(path_to_file, encoding="utf-8") as file:
-            result = json.load(file) + []
+        with open(path_to_file, encoding="utf-8") as f:
+            result = json.load(f) + []
             logger.info("Получен файл с данными в формате list.")
             return result
     except json.decoder.JSONDecodeError:
@@ -62,20 +62,20 @@ def get_rub_sum(transaction: dict, currency: str = "RUB") -> Any:
     raise ValueError(f"Транзация выполнена не в {currency}")
 
 
-def get_amount_in_rub(file_name: str) -> Any:
+def get_amount_in_rub(file: str) -> Any:
     """
     Функция принимает на вход одну транзакцию
     и возвращает сумму транзакции (amount) в рублях, тип float
-    :param file_name:
+    :param file:
     :return sum of transaction:
     """
     url = "https://www.cbr-xml-daily.ru/daily_json.js"
 
-    cur_dir = os.path.dirname(os.path.abspath("."))
-    path_to_file = os.path.join(cur_dir + "/data/" + file_name)
+    cur_dir = os.path.dirname(os.path.dirname(__file__))
+    path_to_file = os.path.join(cur_dir + "/data/" + file)
 
-    with open(path_to_file, encoding="utf-8") as file:
-        transaction = json.load(file)
+    with open(path_to_file, encoding="utf-8") as f:
+        transaction = json.load(f)
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -101,7 +101,7 @@ def table_to_dict_list(file: str) -> Any:
     :param file:
     :return Any:
     """
-    cur_dir = os.path.dirname(os.path.abspath("."))
+    cur_dir = os.path.dirname(os.path.dirname(__file__))
     path_to_file = os.path.join(cur_dir + "/data/" + file)
     ext = os.path.splitext(path_to_file)[1]
     if ext == ".csv":

@@ -1,6 +1,7 @@
-import pytest
 import os.path
 from datetime import datetime
+
+import pytest
 
 from src.decorators import log
 

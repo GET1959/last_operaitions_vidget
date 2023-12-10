@@ -1,8 +1,6 @@
 import logging
 import re
-from collections import Counter, defaultdict
-
-from src.utils import table_to_dict_list
+from collections import Counter
 
 from src.utils import table_to_dict_list
 
@@ -38,7 +36,6 @@ def find_operation(transactions_list: list[dict], string: str) -> list[dict]:
 
 TRANS_LIST = table_to_dict_list("transactions_excel.xlsx")
 
-
 CAT_DICT = {
     "Перевод организации": 0,
     "Перевод с карты на карту": 0,
@@ -72,3 +69,4 @@ def category_count(transactions_list: list[dict], cat_dict: dict) -> dict:
     logger.info("Из списка трансакций получена статистика по категориям.")
 
     return category_count_dict
+print(find_operation(table_to_dict_list("transactions_excel.xlsx"), 'Перевод'))

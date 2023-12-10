@@ -1,5 +1,5 @@
-from typing import Any
 from datetime import datetime
+from typing import Any
 
 from src.masks import account_masker, card_masker
 
@@ -33,5 +33,6 @@ def date_str_to_date(str_date: str) -> Any:
     :param str_date:
     :return str_date_formatted:
     """
-    return datetime.strptime(str_date.replace('T', ' '),
-                             '%Y-%m-%d %H:%M:%S.%f').strftime('%d.%m.%Y')
+    return datetime.strptime(str_date.replace("T", " "), "%Y-%m-%d %H:%M:%S.%f").strftime(
+        "%d.%m.%Y"
+    )
